@@ -1,0 +1,128 @@
+import React from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { clearCart } from '../../store/slices/cartSlice';
+import { useTranslation } from '../../hooks/useTranslations';
+import CartProductUnit from '../../components/CartProductUnit/CartProductUnit';
+
+export default function Cart() {
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const { items: cartItems, total } = useSelector((state) => state.cart);
+  const { email } = useSelector((state) => state.user);
+  const { t } = useTranslation();
+
+  const handleCheckout = () => {
+    if (cartItems.length === 0) {
+      Alert.alert(t('cart_empty_warning_title') || 'Carrito Vacío', t('cart_empty_warning_message') || 'No puedes proceder con el carrito vacío.');
+      return;
+    }
+
+    if (email) {
+      // Como no tenemos pantalla de Checkout, mostramos un WIP
+      Alert.alert("Work in Progress", "La funcionalidad de Checkout aún no está implementada.");
+    } else {
+      // Si el usuario no está logueado, le ofrecemos ir a la pantalla de autenticación
+      Alert.alert(
+        t('login_required_title') || 'Inicio de Sesión Requerido',
+        t('login_required_message') || 'Necesitas iniciar sesión para continuar.',
+        [
+          { text: 'Cancelar', style: 'cancel' },
+          { text: 'Ir a Login', onPress: () => navigation.navigate('Auth') }
+        ]
+      );
+    }
+  };
+
+  const handleClearCart = () => {
+    dispatch(clearCart());
+  };
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={cartItems}
+        renderItem={({ item }) => <CartProductUnit product={item} />}
+        keyExtractor={(item) => item._id.toString()}
+        style={styles.list}
+        ListEmptyComponent={<View style={styles.emptyContainer}><Text style={styles.emptyText}>{t('cart_empty') || 'Tu carrito está vacío'}</Text></View>}
+      />
+      <View style={styles.footer}>
+        <Text style={styles.totalTitle}>TOTAL</Text>
+        <Text style={styles.totalAmount}>
+          ${new Intl.NumberFormat('es-AR').format(total)}
+        </Text>
+      </View>
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity style={[styles.button, styles.primaryButton]} onPress={handleCheckout}>
+          <Text style={styles.primaryButtonText}>{t('cart_btn_primary') || 'PROCEDER AL PAGO'}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, styles.secondaryButton]} onPress={handleClearCart}>
+          <Text style={styles.secondaryButtonText}>{t('cart_btn_secondary') || 'VACIAR CARRITO'}</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50,
+  },
+  emptyText: {
+    fontSize: 18,
+    color: '#888',
+  },
+  list: {
+    flex: 1,
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+  },
+  totalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  totalAmount: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  buttonsContainer: {
+    padding: 16,
+  },
+  button: {
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  primaryButton: {
+    backgroundColor: '#007bff',
+  },
+  primaryButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  secondaryButton: {
+    backgroundColor: '#6c757d',
+  },
+  secondaryButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});

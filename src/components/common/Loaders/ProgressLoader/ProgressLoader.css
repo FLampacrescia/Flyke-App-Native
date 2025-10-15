@@ -1,0 +1,19 @@
+.progress-loader-container {
+    top: 60px;
+    left: 0;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    background: rgba(206, 206, 206, 0.253);
+    height: 5px;
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+.progress-loader {
+    height: 100%;
+    background: var(--text-color);
+    border-radius: 7px;
+    width: 0%;
+    transition: width 0.3s ease-out;
+}
