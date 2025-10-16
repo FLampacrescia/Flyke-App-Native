@@ -13,9 +13,7 @@ export default function MyAccountMobileHeader() {
     const sectionTitles = {
         'MyAccount': t('myaccount_main_title'),
         'MyProfile': t('myaccount_navbar_profile_section_subtitle'),
-        'MyOrders': t('myaccount_navbar_orders_section_subtitle'),
         'Wishlist': t('myaccount_navbar_wishlist_section_subtitle'),
-        'UserAddresses': t('myaccount_navbar_addresses_section_subtitle'),
     };
 
     const currentTitle = sectionTitles[route.name] || '';
@@ -50,7 +48,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderBottomWidth: 1,
         borderBottomColor: '#eee',
-        height: 60, // Standard header height
+        height: 60,
     },
     backButton: {
         padding: 5,

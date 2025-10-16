@@ -3,7 +3,6 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { addItem } from '../../../store/slices/cartSlice';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import config from '../../../config/env.config';
 
 // Simple native replacement for the QuantityButton
 const QuantitySelector = ({ quantity, setQuantity }) => {
@@ -37,7 +36,7 @@ export default function ProductMainInfo({ product }) {
         <View style={styles.container}>
             <Image 
                 style={styles.productImage} 
-                source={{ uri: product.thumbnails[0] }} // Using thumbnails for now
+                source={{ uri : product.image}}
             />
             <View style={styles.infoContainer}>
                 <View style={styles.titleContainer}>

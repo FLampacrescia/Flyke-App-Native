@@ -40,10 +40,9 @@ const TabsNavigator = () => {
                 component={ProfileStackNavigator} 
                 listeners={({ navigation }) => ({
                     tabPress: (e) => {
-                        // If the user is not logged in, prevent navigation and open the Auth modal
                         if (!token) {
                             e.preventDefault();
-                            navigation.navigate('Auth');
+                            navigation.navigate('AuthStack'); 
                         }
                     },
                 })}

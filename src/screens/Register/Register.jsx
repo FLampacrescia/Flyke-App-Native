@@ -1,22 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert } from 'react-native';
-import { useTranslation } from '../../hooks/useTranslations';
-import MainTitle from '../../components/Common/Titles/MainTitle/MainTitle';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { useTranslation } from '../../hooks/useTranslations';
 import { useSignupMutation } from '../../store/services/authApi';
-import { useCreateUserProfileMutation } from '../../store/services/profileApi';
+// import { useCreateUserProfileMutation } from '../../store/services/profileApi'; // Lo comentamos si no se usa de inmediato
 import { setUser } from '../../store/slices/userSlice';
 import { saveSession } from '../../db';
-import { Ionicons } from '@expo/vector-icons';
 
 export default function Register() {
     const { t } = useTranslation();
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const [triggerSignUp, { data: authData, isSuccess, isError, error, isLoading }] = useSignupMutation();
-    const [createUserProfile] = useCreateUserProfileMutation();
+    
+    // Hooks de la API
+    const [triggerSignUp, { isLoading }] = useSignupMutation();
+    // const [createUserProfile] = useCreateUserProfileMutation(); // Descomentar cuando la API de perfil esté lista
 
+    // Estado del formulario
     const [formData, setFormData] = useState({
         name: '',
         lastname: '',
@@ -24,146 +26,176 @@ export default function Register() {
         password: '',
         confirmPassword: '',
     });
-    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-    const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
-
-    useEffect(() => {
-        if (isSuccess && authData) {
-            const sessionData = {
-                email: authData.email,
-                token: authData.idToken,
-                localId: authData.localId,
-            };
-            
-            const userProfile = {
-                name: formData.name,
-                lastname: formData.lastname,
-                email: authData.email,
-                role: 'user',
-                createdAt: new Date().toISOString(),
-            };
-
-            Promise.all([
-                saveSession(sessionData),
-                createUserProfile({ localId: authData.localId, profileData: userProfile }).unwrap()
-            ])
-            .then(() => {
-                dispatch(setUser(sessionData));
-            })
-            .catch(err => {
-                console.error("Failed to register:", err);
-                Alert.alert('Error', 'An error occurred during the final step of registration.');
-            });
-        }
-        if (isError) {
-            const errorMessage = error?.data?.error?.message || 'An error occurred during registration.';
-            Alert.alert('Registration Error', errorMessage);
-        }
-    }, [isSuccess, authData, isError, error, dispatch, formData, createUserProfile]);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleInputChange = (name, value) => {
         setFormData({ ...formData, [name]: value });
     };
 
     const handleRegister = async () => {
-        if (!formData.name || !formData.lastname || !formData.email || !formData.password || !formData.confirmPassword) {
+        const { name, lastname, email, password, confirmPassword } = formData;
+        if (!name || !lastname || !email || !password || !confirmPassword) {
             Alert.alert('Error', 'Por favor, complete todos los campos.');
             return;
         }
-        if (formData.password !== formData.confirmPassword) {
+        if (password !== confirmPassword) {
             Alert.alert('Error', 'Las contraseñas no coinciden.');
             return;
         }
 
         try {
-            await triggerSignUp({ email: formData.email, password: formData.password, returnSecureToken: true }).unwrap();
-        } catch (err) {
-            console.error('Failed to sign up:', err);
+            // 2. Crear la cuenta de autenticación
+            const authData = await triggerSignUp({ email, password, returnSecureToken: true }).unwrap();
+            
+            // 3. Crear el objeto de sesión con los datos correctos
+            const sessionData = {
+                email: authData.email,
+                token: authData.idToken,
+                localId: authData.localId,
+                userName: name, 
+                lastname: lastname,
+                profileImage: null,
+            };
+
+            console.log("Datos que se van a guardar:", sessionData);
+
+            // 4. Guardar la sesión en la base de datos local
+            await saveSession(sessionData);
+
+            /*
+            // 5. (Opcional) Guardar perfil en la base de datos remota (Firebase Realtime DB, etc.)
+            const userProfile = { name, lastname, email, createdAt: new Date().toISOString() };
+            await createUserProfile({ localId: authData.localId, profileData: userProfile }).unwrap();
+            */
+
+            // 6. Actualizar el estado de Redux para iniciar sesión automáticamente
+            dispatch(setUser(sessionData));
+
+            // 7. Navegar fuera del flujo de autenticación
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'AppTabs' }], // Asegúrate que 'AppTabs' es el nombre correcto en tu MainNavigator
+            });
+
+        } catch (error) {
+            console.error("Error en el proceso de registro:", error);
+            const errorMessage = error?.data?.error?.message || 'Ocurrió un error durante el registro.';
+            Alert.alert('Error de Registro', errorMessage);
         }
     };
 
     return (
-        <ScrollView style={styles.container}>
-            <View style={styles.formContainer}>
-                <MainTitle classAdd="form-title" text={t('register_page_main_title')} />
-                
-                <Text style={styles.label}>{t('name')}</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder={t('name_placeholder')}
-                    value={formData.name}
-                    onChangeText={(text) => handleInputChange('name', text)}
-                    autoCapitalize="words"
-                    editable={!isLoading}
-                />
-                <Text style={styles.label}>{t('lastname')}</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder={t('lastname_placeholder')}
-                    value={formData.lastname}
-                    onChangeText={(text) => handleInputChange('lastname', text)}
-                    autoCapitalize="words"
-                    editable={!isLoading}
-                />
-                <Text style={styles.label}>{t('email')}</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder={t('email_placeholder')}
-                    value={formData.email}
-                    onChangeText={(text) => handleInputChange('email', text)}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    editable={!isLoading}
-                />
-                <Text style={styles.label}>{t('password')}</Text>
-                <View style={styles.passwordContainer}>
-                    <TextInput
-                        style={styles.passwordInput}
-                        placeholder={t('password_placeholder')}
-                        value={formData.password}
-                        onChangeText={(text) => handleInputChange('password', text)}
-                        secureTextEntry={!isPasswordVisible}
-                        editable={!isLoading}
-                    />
-                    <TouchableOpacity onPress={() => setIsPasswordVisible(!isPasswordVisible)} style={styles.eyeIcon}>
-                        <Ionicons name={isPasswordVisible ? "eye-off" : "eye"} size={24} color="grey" />
-                    </TouchableOpacity>
+        <KeyboardAvoidingView 
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.container}
+        >
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={styles.headerContent}>
+                    <Text style={styles.formTitle}>REGISTRO.</Text>
                 </View>
 
-                <Text style={styles.label}>{t('confirm_password')}</Text>
-                <View style={styles.passwordContainer}>
+                <View style={styles.formContainer}>
+                    {/* Nombre */}
                     <TextInput
-                        style={styles.passwordInput}
-                        placeholder={t('confirm_password_placeholder')}
-                        value={formData.confirmPassword}
-                        onChangeText={(text) => handleInputChange('confirmPassword', text)}
-                        secureTextEntry={!isConfirmPasswordVisible}
+                        style={styles.input}
+                        placeholder={t('register_page_input1_placeholder')}
+                        placeholderTextColor="#999"
+                        value={formData.name}
+                        onChangeText={(text) => handleInputChange('name', text)}
+                        autoCapitalize="words"
                         editable={!isLoading}
                     />
-                    <TouchableOpacity onPress={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)} style={styles.eyeIcon}>
-                        <Ionicons name={isConfirmPasswordVisible ? "eye-off" : "eye"} size={24} color="grey" />
+                    {/* Apellido */}
+                    <TextInput
+                        style={styles.input}
+                        placeholder={t('register_page_input2_placeholder')}
+                        placeholderTextColor="#999"
+                        value={formData.lastname}
+                        onChangeText={(text) => handleInputChange('lastname', text)}
+                        autoCapitalize="words"
+                        editable={!isLoading}
+                    />
+                    {/* Email */}
+                    <TextInput
+                        style={styles.input}
+                        placeholder={t('register_page_input9_placeholder')}
+                        placeholderTextColor="#999"
+                        value={formData.email}
+                        onChangeText={(text) => handleInputChange('email', text)}
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        editable={!isLoading}
+                    />
+                    {/* Contraseña */}
+                    <View style={styles.passwordInputContainer}>
+                        <TextInput
+                            style={styles.passwordInput}
+                            placeholder={t('register_page_input11_placeholder')}
+                            placeholderTextColor="#999"
+                            value={formData.password}
+                            onChangeText={(text) => handleInputChange('password', text)}
+                            secureTextEntry={!showPassword}
+                            editable={!isLoading}
+                        />
+                        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                            <Icon name={showPassword ? 'eye-slash' : 'eye'} size={20} color="#333" />
+                        </TouchableOpacity>
+                    </View>
+                    {/* Confirmar Contraseña */}
+                    <View style={styles.passwordInputContainer}>
+                        <TextInput
+                            style={styles.passwordInput}
+                            placeholder={t('register_page_input12_placeholder')}
+                            placeholderTextColor="#999"
+                            value={formData.confirmPassword}
+                            onChangeText={(text) => handleInputChange('confirmPassword', text)}
+                            secureTextEntry={!showConfirmPassword}
+                            editable={!isLoading}
+                        />
+                        <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+                            <Icon name={showConfirmPassword ? 'eye-slash' : 'eye'} size={20} color="#333" />
+                        </TouchableOpacity>
+                    </View>
+
+                    {/* Botón de Registro */}
+                    <TouchableOpacity style={styles.button} onPress={handleRegister} disabled={isLoading}>
+                        {isLoading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>{t('register_page_btn')}</Text>}
                     </TouchableOpacity>
+
+                    {/* Link para ir a Login */}
+                    <View style={styles.loginContainer}>
+                        <Text style={styles.loginText}>{t('register_already_have_account')}</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('Login')} disabled={isLoading}>
+                            <Text style={[styles.loginText, styles.loginLink]}>{t('login_page_btn')}</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-
-                <TouchableOpacity style={styles.button} onPress={handleRegister} disabled={isLoading}>
-                    {isLoading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>{t('register')}</Text>}
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => navigation.navigate('Login')} disabled={isLoading}>
-                    <Text style={styles.linkText}>{t('already_have_account')}</Text>
-                </TouchableOpacity>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#fff',
+    },
+    headerContent: {
+        alignItems: 'center',
+        paddingTop: 170,
+        paddingBottom: 20,
+        marginBottom: 30,
+    },
+    formTitle: {
+        fontSize: 36,
+        fontWeight: '900',
+        fontStyle: 'italic',
+        letterSpacing: -1,
     },
     formContainer: {
-        padding: 20,
+        paddingHorizontal: 20,
+        paddingBottom: 40,
     },
     input: {
         height: 50,
@@ -172,50 +204,47 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginBottom: 15,
         paddingHorizontal: 15,
-        backgroundColor: '#fff',
         fontSize: 16,
     },
-    passwordContainer: {
+    passwordInputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         borderColor: '#ccc',
         borderWidth: 1,
         borderRadius: 8,
         marginBottom: 15,
-        backgroundColor: '#fff',
+        paddingHorizontal: 15,
         height: 50,
     },
     passwordInput: {
         flex: 1,
-        paddingHorizontal: 15,
         fontSize: 16,
-    },
-    eyeIcon: {
-        padding: 10,
+        paddingRight: 10,
     },
     button: {
-        backgroundColor: '#333',
-        paddingVertical: 15,
-        borderRadius: 8,
+        backgroundColor: '#000',
+        padding: 15,
+        borderRadius: 30,
         alignItems: 'center',
-        marginTop: 20,
         minHeight: 50,
+        marginTop: 10,
     },
     buttonText: {
         color: '#fff',
-        fontWeight: 'bold',
         fontSize: 16,
+        fontWeight: 'bold',
     },
-    linkText: {
-        color: '#333',
-        textAlign: 'center',
+    loginContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
         marginTop: 20,
-        textDecorationLine: 'underline',
     },
-    label: {
+    loginText: {
         fontSize: 16,
-        marginBottom: 5,
-        color: '#333',
+    },
+    loginLink: {
         fontWeight: 'bold',
+        marginLeft: 5,
+        textDecorationLine: 'underline',
     },
 });

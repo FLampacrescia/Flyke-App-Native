@@ -10,7 +10,7 @@ const AuthStackNavigator = () => {
         <Stack.Navigator
             initialRouteName="Login"
             screenOptions={{
-                headerShown: false, // We probably don't want a header in the auth flow
+                headerShown: false,
             }}
         >
             <Stack.Screen name="Login" component={Login} />

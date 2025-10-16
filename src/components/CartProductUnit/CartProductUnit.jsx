@@ -3,7 +3,6 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { updateItemQuantity, removeItem } from '../../store/slices/cartSlice';
 import QuantityButton from '../Buttons/QuantityButton/QuantityButton';
-import config from '../../config/env.config';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function CartProductUnit({ product }) {
@@ -20,7 +19,7 @@ export default function CartProductUnit({ product }) {
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: `${config.FILES_URL}/products/${product.image}` }}
+        source={{ uri : product.image}}
         style={styles.productImage}
       />
       <View style={styles.detailsContainer}>

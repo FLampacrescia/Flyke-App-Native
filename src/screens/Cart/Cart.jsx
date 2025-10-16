@@ -110,7 +110,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   primaryButton: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#121212',
+    borderRadius: 30,
   },
   primaryButtonText: {
     color: '#fff',
@@ -118,10 +119,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   secondaryButton: {
-    backgroundColor: '#6c757d',
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderRadius: 30,
   },
   secondaryButtonText: {
-    color: '#fff',
+    color: '#121212',
     fontSize: 16,
     fontWeight: 'bold',
   },

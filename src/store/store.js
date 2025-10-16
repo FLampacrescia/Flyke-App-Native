@@ -1,6 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from "@reduxjs/toolkit/query";
-
 import shopReducer from './slices/shopSlice';
 import cartReducer from './slices/cartSlice';
 import userReducer from './slices/userSlice';
