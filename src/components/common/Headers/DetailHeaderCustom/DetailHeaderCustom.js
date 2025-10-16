@@ -1,22 +1,13 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { useTranslation } from '../../../../hooks/useTranslations';
+import { useNavigation } from '@react-navigation/native';
 
-export default function ProfileHeaderCustom() {
+export default function DetailHeaderCustom() {
     const navigation = useNavigation();
-    const route = useRoute();
-    const { t } = useTranslation();
 
-    const sectionTitles = {
-        'MyAccount': t('myaccount_main_title'),
-        'MyProfile': t('myaccount_navbar_profile_section_subtitle'),
-        'Wishlist': t('myaccount_navbar_wishlist_section_subtitle'),
-    };
-
-    const currentTitle = sectionTitles[route.name] || route.name;
+    const currentTitle = "Detalles del Producto";
     const canGoBack = navigation.canGoBack();
 
     return (

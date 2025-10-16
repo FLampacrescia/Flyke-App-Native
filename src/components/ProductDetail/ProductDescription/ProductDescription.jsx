@@ -47,24 +47,21 @@ const styles = StyleSheet.create({
     summaryContainer: {
         marginBottom: 20,
     },
-    detailsContainer: {
-        // Add any specific styles for details container if needed
-    },
     title: {
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 10,
-        color: '#333',
+        color: '#121212',
     },
     description: {
         fontSize: 16,
         lineHeight: 24,
-        color: '#666',
+        color: '#777',
     },
     detailItem: {
         fontSize: 16,
         lineHeight: 24,
-        color: '#666',
+        color: '#777',
         marginBottom: 5,
     }
 });

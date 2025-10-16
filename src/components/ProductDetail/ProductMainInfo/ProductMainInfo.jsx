@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import { addItem } from '../../../store/slices/cartSlice';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-// Simple native replacement for the QuantityButton
 const QuantitySelector = ({ quantity, setQuantity }) => {
     const increment = () => setQuantity(q => q + 1);
     const decrement = () => setQuantity(q => Math.max(1, q - 1));
@@ -28,7 +27,6 @@ export default function ProductMainInfo({ product }) {
 
     const handleAddToCart = () => {
         dispatch(addItem({ product, quantity }));
-        // We can add a native alert or toast message here later
         alert('Producto agregado al carrito');
     };
 
@@ -75,6 +73,8 @@ const styles = StyleSheet.create({
     productImage: {
         width: '100%',
         aspectRatio: 1,
+        borderBottomWidth: 1,
+        borderBottomColor: '#f2f2f2',
     },
     infoContainer: {
         padding: 20,
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     productTitle: {
         fontSize: 24,
         fontWeight: 'bold',
-        color: '#333',
+        color: '#121212',
     },
     productCategory: {
         fontSize: 16,
@@ -99,13 +99,13 @@ const styles = StyleSheet.create({
         borderBottomColor: '#eee',
     },
     productPrice: {
-        fontSize: 28,
+        fontSize: 24,
         fontWeight: 'bold',
-        color: '#000',
+        color: '#121212',
     },
     feeText: {
         fontSize: 14,
-        color: '#27AE60',
+        color: '#23a057ff',
         marginTop: 5,
     },
     sectionContainer: {
@@ -147,11 +147,11 @@ const styles = StyleSheet.create({
     },
     shipmentText: {
         marginLeft: 10,
-        fontSize: 14,
-        color: '#333',
+        fontSize: 13,
+        color: '#121212',
     },
     addToCartButton: {
-        backgroundColor: '#000',
+        backgroundColor: '#121212',
         padding: 15,
         borderRadius: 30,
         alignItems: 'center',

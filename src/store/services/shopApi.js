@@ -7,7 +7,14 @@ export const shopApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: rtdbBaseUrl }),
     endpoints: (builder) => ({
         getProducts: builder.query({ query: () => "products.json" }),
+        getProductById: builder.query({
+            query: (productId) => `products.json?orderBy="_id"&equalTo="${productId}"`,
+            transformResponse: (response) => {
+                const product = Object.values(response)[0];
+                return product;
+            },
+        }),
     })
 });
 
-export const { useGetProductsQuery } = shopApi;
+export const { useGetProductsQuery, useGetProductByIdQuery } = shopApi;

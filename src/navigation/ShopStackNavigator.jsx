@@ -4,6 +4,7 @@ import Home from '../screens/home/Home';
 import ProductDetail from '../screens/ProductDetail/ProductDetail';
 import HomeHeaderCustom from '../components/common/Headers/HomeHeaderCustom/HomeHeaderCustom';
 import SearchScreen from '../screens/Search/SearchScreen';
+import DetailHeaderCustom from '../components/common/Headers/DetailHeaderCustom/DetailHeaderCustom';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,11 @@ const ShopStackNavigator = () => {
             <Stack.Screen 
                 name="ProductDetail" 
                 component={ProductDetail} 
+                options={{
+                    header: ({ navigation, route }) => (
+                        <DetailHeaderCustom navigation={navigation} route={route} />
+                    ),
+                }}
             />
 
             <Stack.Screen 

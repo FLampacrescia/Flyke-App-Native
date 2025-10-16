@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useTranslation } from '../../../hooks/useTranslations';
 
-const FeaturesBackgroundImg = require("../../../assets/features-banner.webp");
+const FeaturesBackgroundImg = require("../../../assets/images/features-banner.webp");
 
 const Feature = ({ iconName, title, description, buttonText, iconColor }) => (
     <View style={styles.feature}>
