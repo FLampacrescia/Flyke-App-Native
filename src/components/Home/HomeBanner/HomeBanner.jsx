@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Dimensions } from "react-native";
 import { useTranslation } from '../../../hooks/useTranslations';
 
-const HeroImg = require('../../../assets/bannerMob1.webp');
+const HeroImg = require('../../../assets/images/bannerMob1.webp');
 
 export default function HomeBanner({ onScrollToProducts }) {
     const { t } = useTranslation();
