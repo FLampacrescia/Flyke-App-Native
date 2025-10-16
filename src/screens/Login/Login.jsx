@@ -8,7 +8,7 @@ import { setUser } from '../../store/slices/userSlice';
 import { saveSession, getSession } from '../../db';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const Logo = require('../../assets/Logo-FLYKE-Isotipo.png');
+const Logo = require('../../assets/Logo-FLYKE-Isotipo.webp');
 
 export default function Login() {
     const { t } = useTranslation();

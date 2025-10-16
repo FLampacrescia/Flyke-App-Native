@@ -4,7 +4,7 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
 
-const Logo = require('../../../../assets/Logo-FLYKE-Isotipo.png');
+const Logo = require('../../../../assets/Logo-FLYKE-Isotipo.webp');
 
 const HomeHeaderCustom = ({ navigation }) => {
     const { localId, userName } = useSelector(state => state.user);
