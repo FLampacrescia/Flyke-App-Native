@@ -3,6 +3,7 @@ import { ScrollView, View, Text, ActivityIndicator, StyleSheet } from "react-nat
 import ProductDescription from "../../components/ProductDetail/ProductDescription/ProductDescription";
 import ProductMainInfo from "../../components/ProductDetail/ProductMainInfo/ProductMainInfo";
 import { useGetProductByIdQuery } from '../../store/services/shopApi';
+import { colors } from '../../theme/colors';
 
 export default function ProductDetail() {
     const route = useRoute();
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
     },
     errorMsg: {
         fontSize: 18,
-        color: 'red',
+        color: colors.textColor,
     },
     container: {
         flex: 1,

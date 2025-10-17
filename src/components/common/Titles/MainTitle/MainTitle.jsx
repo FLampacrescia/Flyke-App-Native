@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet } from "react-native";
+import { colors } from "../../../../theme/colors";
 
 export default function MainTitle({text, classAdd, classAddContainer, spanText, lineHeight}) {
-    // The props classAdd and classAddContainer are now for style mapping
     return (
         <View style={styles[classAddContainer]}>
-            <Text style={[styles[classAdd], lineHeight ? { lineHeight } : {}]}>
+            <Text style={[styles[classAdd]]}>
                 {text}
                 {spanText && <Text style={styles.aboutTitleGray}>{spanText}</Text>}
             </Text>
@@ -13,21 +13,30 @@ export default function MainTitle({text, classAdd, classAddContainer, spanText, 
 }
 
 const styles = StyleSheet.create({
-    heroTitle: {
-        fontSize: 40,
-        fontWeight: '900',
-        fontStyle: 'italic',
+    'mainTitle': {
+        fontFamily: 'Poppins-BlackItalic',
+        fontSize: 28,
+        textTransform: 'uppercase',
         textAlign: 'center',
+        color: colors.textColorWhite,
+    },
+    'formTitle': {
+        fontSize: 36,
+        fontFamily: 'Poppins-BlackItalic',
         letterSpacing: -1,
+        color: colors.textColor,
     },
     'about-title-container': {
-        // styles for the container
+        marginBottom: 20,
     },
     'about-title': {
-        fontSize: 24,
-        fontWeight: 'bold',
+        fontSize: 36,
+        fontWeight: '900',
+        fontStyle: 'italic',
+        textTransform: 'uppercase',
+        color: colors.textColor,
     },
     aboutTitleGray: {
-        color: 'gray',
+        color: '#b4b4b4ff',
     },
 });

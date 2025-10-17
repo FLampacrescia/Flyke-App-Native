@@ -19,7 +19,6 @@ export const profileApi = createApi({
             }),
             invalidatesTags: ['profileImage']
         }),
-        // Mantenemos la mutación para crear el perfil, pero adaptada a fetchBaseQuery
         createUserProfile: builder.mutation({
             query: ({ localId, profileData }) => ({
                 url: `/users/${localId}.json`,
@@ -28,7 +27,6 @@ export const profileApi = createApi({
             }),
             invalidatesTags: ['userProfile']
         }),
-        // Endpoint para obtener los datos del perfil de usuario
         getUserProfile: builder.query({
             query: (localId) => `/users/${localId}.json`,
             providesTags: ['userProfile']

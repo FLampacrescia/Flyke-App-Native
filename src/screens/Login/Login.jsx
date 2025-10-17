@@ -7,6 +7,7 @@ import { useLoginMutation } from '../../store/services/authApi';
 import { setUser } from '../../store/slices/userSlice';
 import { saveSession, getSession } from '../../db';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MainTitle from '../../components/common/Titles/MainTitle/MainTitle';
 
 const Logo = require('../../assets/images/Logo-FLYKE-Isotipo.webp');
 
@@ -34,9 +35,7 @@ export default function Login() {
             let existingUserName = null;
             let existingLastname = null;
             
-            // ✅ 3. Verificamos si la sesión guardada pertenece al mismo usuario que acaba de iniciar sesión
             if (existingSession && existingSession.localId === data.localId) {
-                // Si es así, rescatamos sus datos de perfil
                 existingUserName = existingSession.userName;
                 existingLastname = existingSession.lastname;
             }
@@ -71,7 +70,7 @@ export default function Login() {
         <View style={styles.container}>
             <View style={styles.headerContent}>
                 <Image source={Logo} style={styles.logo} resizeMode="contain" />
-                <Text style={styles.formTitle}>LOGIN.</Text>
+                <MainTitle text={'LOGIN.'} classAdd={'formTitle'} />
             </View>
 
             <View style={styles.formContainer}>
@@ -149,8 +148,7 @@ const styles = StyleSheet.create({
     },
     formTitle: {
         fontSize: 36,
-        fontWeight: '900',
-        fontStyle: 'italic',
+        fontFamily: 'Poppins-BlackItalic',
         letterSpacing: -1,
     },
     formContainer: {
@@ -163,7 +161,8 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginBottom: 15,
         paddingHorizontal: 15,
-        fontSize: 16,
+        fontFamily: 'Poppins-Regular',
+        fontSize: 15,
     },
     passwordInputContainer: {
         flexDirection: 'row',
@@ -177,7 +176,8 @@ const styles = StyleSheet.create({
     passwordInput: {
         flex: 1,
         height: 50,
-        fontSize: 16,
+        fontFamily: 'Poppins-Regular',
+        fontSize: 15,
         paddingRight: 10,
     },
     passwordToggle: {
@@ -192,7 +192,8 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     rememberMeText: {
-        fontSize: 16,
+        fontFamily: 'Poppins-Regular',
+        fontSize: 15,
     },
     button: {
         backgroundColor: '#000',
@@ -203,8 +204,8 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
+        fontSize: 15.5,
+        fontFamily: 'Poppins-SemiBold',
     },
     registerContainer: {
         flexDirection: 'row',
@@ -212,16 +213,11 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     registerText: {
-        fontSize: 16,
+        fontFamily: 'Poppins-Regular',
+        fontSize: 15,
     },
     registerLink: {
-        fontWeight: 'bold',
-        marginLeft: 5,
+        fontFamily: 'Poppins-SemiBold',
         textDecorationLine: 'underline',
     },
-    errorText: {
-        color: 'red',
-        textAlign: 'center',
-        marginBottom: 10,
-    }
 });

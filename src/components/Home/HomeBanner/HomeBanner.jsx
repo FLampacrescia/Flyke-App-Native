@@ -1,5 +1,7 @@
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Dimensions } from "react-native";
 import { useTranslation } from '../../../hooks/useTranslations';
+import MainTitle from "../../common/Titles/MainTitle/MainTitle";
+import { colors } from "../../../theme/colors";
 
 const HeroImg = require('../../../assets/images/bannerMob1.webp');
 
@@ -12,7 +14,7 @@ export default function HomeBanner({ onScrollToProducts }) {
             
             <ImageBackground source={HeroImg} style={styles.heroImg} resizeMode="cover">
                 <View style={styles.heroTextContainer}>
-                    <Text style={styles.heroTitle}>{t('hero_main_title')}</Text>
+                    <MainTitle text={t('hero_main_title')} classAdd={'mainTitle'} />
                     <TouchableOpacity style={styles.heroBtn} onPress={onScrollToProducts} >
                         <Text style={styles.heroBtnText}>{t('hero_btn')}</Text>
                     </TouchableOpacity>
@@ -37,14 +39,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.2)',
         width: '100%',
     },
-    heroTitle: {
-        fontSize: 28,
-        fontWeight: '900',
-        fontStyle: 'italic',
-        textTransform: 'uppercase',
-        textAlign: 'center',
-        color: '#fff',
-    },
     heroBtn: {
         backgroundColor: '#fff',
         borderRadius: 30,
@@ -53,8 +47,8 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     heroBtnText: {
-        color: '#000',
-        fontWeight: '600',
-        fontSize: 16,
+        fontFamily: 'Poppins-Medium',
+        color: colors.textColor,
+        fontSize: 15,
     }
 });

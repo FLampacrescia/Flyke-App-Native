@@ -26,7 +26,6 @@ export const initSessionsTable = async () => {
 
 export const saveSession = async ({ localId, email, token, userName, lastname, profileImage }) => {
     await initDb();
-    // Borra cualquier sesión anterior para asegurar que solo haya una activa
     await db.runAsync('DELETE FROM sessions;');
     await db.runAsync(
         'INSERT INTO sessions (localId, email, token, userName, lastname, profileImage) VALUES (?, ?, ?, ?, ?, ?);',

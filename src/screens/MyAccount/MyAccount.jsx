@@ -6,7 +6,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { useTranslation } from '../../hooks/useTranslations';
 import { clearUser, setProfileImage } from '../../store/slices/userSlice';
 import { clearSession, updateProfileImage } from '../../db';
-import MyAccountMobileMenuItem from '../../components/MyAccount/MyAccountMobile/MyAccountMobileMenuItem/MyAccountMobileMenuItem';
+import MyAccountMenuItem from '../../components/MyAccount/MyAccountMenuItem/MyAccountMenuItem';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function MyAccount() {
     const { t } = useTranslation();
@@ -115,12 +116,17 @@ export default function MyAccount() {
             <View style={styles.myAccountMainContent}>
                 <View style={styles.profileSection}>
                     <TouchableOpacity onPress={handleChangeProfilePicture}>
+                    <View style={styles.avatarContainer}>
                         <Image
                             key={profileImage}
                             source={{uri: profileImage}}
                             style={styles.avatar}
                         />
-                    </TouchableOpacity>
+                        <View style={styles.cameraIconContainer}>
+                            <Icon name="camera" style={styles.cameraIcon} />
+                        </View>
+                    </View>
+                </TouchableOpacity>
                     <Text style={styles.userName}>{`${userName} ${lastname}`}</Text>
                     <Text style={styles.userEmail}>{email}</Text>
                 </View>
@@ -128,7 +134,7 @@ export default function MyAccount() {
                     data={menuItems}
                     keyExtractor={(item) => item.path}
                     renderItem={({ item }) => (
-                        <MyAccountMobileMenuItem
+                        <MyAccountMenuItem
                             title={item.title}
                             subtitle={item.subtitle}
                             path={item.path}
@@ -159,30 +165,66 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 40,
     },
-    avatar: {
+    avatarContainer: {
         width: 100,
         height: 100,
         borderRadius: 50,
-        backgroundColor: '#e0e0e0',
         marginBottom: 15,
         borderWidth: 2,
-        borderColor: '#fff'
+        borderColor: '#fff',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
-    userName: { fontSize: 20, fontWeight: 'bold' },
-    userEmail: { fontSize: 16, color: 'gray' },
+    avatar: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 50,
+        backgroundColor: '#e0e0e0',
+    },
+    cameraIconContainer: {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        backgroundColor: '#121212',
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    cameraIcon: {
+        color: '#fff',
+        fontSize: 16,
+    },
+    userName: { 
+        fontSize: 19, 
+        fontFamily: 'Poppins-SemiBold',
+    },
+    userEmail: { 
+        fontSize: 14.5,
+        fontFamily: 'Poppins-Regular',
+        color: 'gray' 
+    },
     menuSection: {
         flexGrow: 0,
     },
     logoutButton: {
         marginTop: 20,
-        backgroundColor: '#ee2a2aff',
+        backgroundColor: '#121212',
+        borderWidth: 1,
         padding: 15,
         borderRadius: 30,
         alignItems: 'center',
     },
     logoutButtonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
+        color: '#f0f0f0',
+        fontSize: 15.5,
+        fontFamily: 'Poppins-SemiBold',
     },
 });

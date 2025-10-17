@@ -54,9 +54,7 @@ const MainNavigator = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                {/* 1. La app principal (Tabs) es la pantalla por defecto y siempre accesible */}
                 <Stack.Screen name="AppTabs" component={TabsNavigator} />
-                {/* 2. El Stack de Autenticación está disponible para navegar hacia él cuando sea necesario */}
                 <Stack.Screen name="AuthStack" component={AuthStackNavigator} />
             </Stack.Navigator>
         </NavigationContainer>

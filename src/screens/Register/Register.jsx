@@ -5,20 +5,17 @@ import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useTranslation } from '../../hooks/useTranslations';
 import { useSignupMutation } from '../../store/services/authApi';
-// import { useCreateUserProfileMutation } from '../../store/services/profileApi'; // Lo comentamos si no se usa de inmediato
 import { setUser } from '../../store/slices/userSlice';
 import { saveSession } from '../../db';
+import MainTitle from '../../components/common/Titles/MainTitle/MainTitle';
 
 export default function Register() {
     const { t } = useTranslation();
     const navigation = useNavigation();
     const dispatch = useDispatch();
     
-    // Hooks de la API
     const [triggerSignUp, { isLoading }] = useSignupMutation();
-    // const [createUserProfile] = useCreateUserProfileMutation(); // Descomentar cuando la API de perfil esté lista
 
-    // Estado del formulario
     const [formData, setFormData] = useState({
         name: '',
         lastname: '',
@@ -45,10 +42,8 @@ export default function Register() {
         }
 
         try {
-            // 2. Crear la cuenta de autenticación
             const authData = await triggerSignUp({ email, password, returnSecureToken: true }).unwrap();
             
-            // 3. Crear el objeto de sesión con los datos correctos
             const sessionData = {
                 email: authData.email,
                 token: authData.idToken,
@@ -60,22 +55,13 @@ export default function Register() {
 
             console.log("Datos que se van a guardar:", sessionData);
 
-            // 4. Guardar la sesión en la base de datos local
             await saveSession(sessionData);
 
-            /*
-            // 5. (Opcional) Guardar perfil en la base de datos remota (Firebase Realtime DB, etc.)
-            const userProfile = { name, lastname, email, createdAt: new Date().toISOString() };
-            await createUserProfile({ localId: authData.localId, profileData: userProfile }).unwrap();
-            */
-
-            // 6. Actualizar el estado de Redux para iniciar sesión automáticamente
             dispatch(setUser(sessionData));
 
-            // 7. Navegar fuera del flujo de autenticación
             navigation.reset({
                 index: 0,
-                routes: [{ name: 'AppTabs' }], // Asegúrate que 'AppTabs' es el nombre correcto en tu MainNavigator
+                routes: [{ name: 'AppTabs' }],
             });
 
         } catch (error) {
@@ -92,11 +78,10 @@ export default function Register() {
         >
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.headerContent}>
-                    <Text style={styles.formTitle}>REGISTRO.</Text>
+                    <MainTitle text={'REGISTRO.'} classAdd={'formTitle'} />
                 </View>
 
                 <View style={styles.formContainer}>
-                    {/* Nombre */}
                     <TextInput
                         style={styles.input}
                         placeholder={t('register_page_input1_placeholder')}
@@ -106,7 +91,6 @@ export default function Register() {
                         autoCapitalize="words"
                         editable={!isLoading}
                     />
-                    {/* Apellido */}
                     <TextInput
                         style={styles.input}
                         placeholder={t('register_page_input2_placeholder')}
@@ -116,7 +100,6 @@ export default function Register() {
                         autoCapitalize="words"
                         editable={!isLoading}
                     />
-                    {/* Email */}
                     <TextInput
                         style={styles.input}
                         placeholder={t('register_page_input9_placeholder')}
@@ -127,7 +110,6 @@ export default function Register() {
                         autoCapitalize="none"
                         editable={!isLoading}
                     />
-                    {/* Contraseña */}
                     <View style={styles.passwordInputContainer}>
                         <TextInput
                             style={styles.passwordInput}
@@ -139,10 +121,9 @@ export default function Register() {
                             editable={!isLoading}
                         />
                         <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                            <Icon name={showPassword ? 'eye-slash' : 'eye'} size={20} color="#333" />
+                            <Icon name={showPassword ? 'eye-slash' : 'eye'} size={20} color="#121212" />
                         </TouchableOpacity>
                     </View>
-                    {/* Confirmar Contraseña */}
                     <View style={styles.passwordInputContainer}>
                         <TextInput
                             style={styles.passwordInput}
@@ -158,12 +139,10 @@ export default function Register() {
                         </TouchableOpacity>
                     </View>
 
-                    {/* Botón de Registro */}
                     <TouchableOpacity style={styles.button} onPress={handleRegister} disabled={isLoading}>
                         {isLoading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>{t('register_page_btn')}</Text>}
                     </TouchableOpacity>
 
-                    {/* Link para ir a Login */}
                     <View style={styles.loginContainer}>
                         <Text style={styles.loginText}>{t('register_already_have_account')}</Text>
                         <TouchableOpacity onPress={() => navigation.navigate('Login')} disabled={isLoading}>
@@ -189,8 +168,7 @@ const styles = StyleSheet.create({
     },
     formTitle: {
         fontSize: 36,
-        fontWeight: '900',
-        fontStyle: 'italic',
+        fontFamily: 'Poppins-BlackItalic',
         letterSpacing: -1,
     },
     formContainer: {
@@ -204,7 +182,8 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginBottom: 15,
         paddingHorizontal: 15,
-        fontSize: 16,
+        fontFamily: 'Poppins-Regular',
+        fontSize: 15,
     },
     passwordInputContainer: {
         flexDirection: 'row',
@@ -218,7 +197,8 @@ const styles = StyleSheet.create({
     },
     passwordInput: {
         flex: 1,
-        fontSize: 16,
+        fontFamily: 'Poppins-Regular',
+        fontSize: 15,
         paddingRight: 10,
     },
     button: {
@@ -231,8 +211,8 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
+        fontSize: 15.5,
+        fontFamily: 'Poppins-SemiBold',
     },
     loginContainer: {
         flexDirection: 'row',
@@ -240,10 +220,11 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     loginText: {
-        fontSize: 16,
+        fontFamily: 'Poppins-Regular',
+        fontSize: 15,
     },
     loginLink: {
-        fontWeight: 'bold',
+        fontFamily: 'Poppins-SemiBold',
         marginLeft: 5,
         textDecorationLine: 'underline',
     },

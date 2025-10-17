@@ -1,7 +1,13 @@
 {
   "expo": {
-    "name": "FlykeEcommerce",
-    "slug": "FlykeEcommerce",
+    "name": "Flyke Ecommerce",
+    "slug": "Flyke Ecommerce",
+    "orientation": "portrait",
+    "splash": {
+      "image": "./src/assets/images/Logo-FLYKE-Isotipo.webp",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
     "plugins": [
       "expo-sqlite"
     ]

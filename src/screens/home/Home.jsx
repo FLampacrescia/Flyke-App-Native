@@ -4,6 +4,7 @@ import ProductCard from "../../components/Home/ProductsSection/ProductCard/Produ
 import { useGetProductsQuery } from "../../store/services/shopApi";
 import HomeBanner from "../../components/Home/HomeBanner/HomeBanner"; 
 import FeaturesSection from '../../components/Home/FeaturesSection/FeaturesSection';
+import { colors } from "../../theme/colors";
 
 export default function Home() {
     const { data: products, error, isLoading } = useGetProductsQuery();
@@ -29,7 +30,6 @@ export default function Home() {
         </>
     );
 
-    // 2. Componente de Pie de Página
     const HomeListFooter = () => (
         <FeaturesSection />
     );
@@ -52,17 +52,15 @@ export default function Home() {
 
     return (
         <FlatList
-            // Le damos flex: 1 al FlatList para que ocupe todo el espacio de la pantalla
             ref={flatListRef}
             style={styles.container} 
             data={products}
             renderItem={({ item }) => <ProductCard product={item} />}
             keyExtractor={(item) => item._id.toString()}
             numColumns={2}
-            // Utilizamos los componentes auxiliares
             ListHeaderComponent={HomeListHeader}
             ListFooterComponent={HomeListFooter}
-            columnWrapperStyle={styles.row} // Añadimos esto para controlar el espaciado entre columnas
+            columnWrapperStyle={styles.row}
         />
     );
 }
@@ -73,11 +71,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     productsTitle: {
-        fontSize: 22,
-        fontWeight: 'bold',
+        fontSize: 21,
+        fontFamily: 'Poppins-SemiBold',
         paddingHorizontal: 25,
         paddingVertical: 25,
-        backgroundColor: '#fff',
+        color: colors.textColor,
     },
     row: {
         justifyContent: 'space-around', 

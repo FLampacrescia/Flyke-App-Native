@@ -1,10 +1,14 @@
-import { View, Text, StyleSheet, ImageBackground } from "react-native";
+import { View, Text, StyleSheet, ImageBackground, TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useTranslation } from '../../../hooks/useTranslations';
+import { useNavigation } from '@react-navigation/native';
+import MainTitle from "../../common/Titles/MainTitle/MainTitle";
+import { colors } from "../../../theme/colors";
 
-const FeaturesBackgroundImg = require("../../../assets/images/features-banner.webp");
+const FeaturesBackgroundImg = require("../../../assets/images/features-banner1.webp");
+const FeaturesAboutImg = require("../../../assets/images/NikeAbt1.webp")
 
-const Feature = ({ iconName, title, description, buttonText, iconColor }) => (
+const Feature = ({ iconName, title, description }) => (
     <View style={styles.feature}>
         <View style={styles.featureIconContainer}>
             <Icon name={iconName} style={styles.featureIcon} />
@@ -18,6 +22,7 @@ const Feature = ({ iconName, title, description, buttonText, iconColor }) => (
 
 export default function FeaturesSection() {
     const { t } = useTranslation();
+    const navigation = useNavigation();
 
     const featuresData = [
         {
@@ -40,18 +45,30 @@ export default function FeaturesSection() {
         }
     ];
 
+    const handleNavigateToAbout = () => {
+        navigation.navigate('About');
+    };
+
     return (
         <View style={styles.sectionFeatures}>
-                <ImageBackground style={styles.featuresBackgroundImg} source={FeaturesBackgroundImg} resizeMode="cover">
-                    <View style={styles.featuresBannerTextContainer}>
-                        <Text style={styles.mainTitle}>{t('mainpage_features_title')}</Text>
-                    </View>
-                </ImageBackground>
+            <ImageBackground style={styles.featuresBackgroundImg} source={FeaturesBackgroundImg} resizeMode="cover">
+                <View style={styles.featuresBannerTextContainer}>
+                    <MainTitle text={t('mainpage_features_title')} classAdd={'mainTitle'} />
+                </View>
+            </ImageBackground>
             <View style={styles.featuresMainContainer}>
                 {featuresData.map((feature, index) => (
                     <Feature key={index} {...feature} />
                 ))}
             </View>
+            <ImageBackground style={styles.featuresAboutImg} source={FeaturesAboutImg} resizeMode="cover">
+                <View style={styles.featuresAboutBannerContainer}>
+                    <MainTitle text={t('mainpage_features_about')} classAdd={'mainTitle'} />
+                    <TouchableOpacity style={styles.featuresBtn} onPress={handleNavigateToAbout}>
+                        <Text style={styles.featuresBtnText}>{t('mainpage_features_about_btn')}</Text>
+                    </TouchableOpacity>
+                </View>
+            </ImageBackground>
         </View>
     );
 }
@@ -68,19 +85,11 @@ const styles = StyleSheet.create({
         overflow: 'hidden', 
     },
     featuresBannerTextContainer: {
-        backgroundColor: 'rgba(0,0,0,0.4)',
+        backgroundColor: 'rgba(0,0,0,0.2)',
         width: '100%',
         height: '100%',
         justifyContent: 'center', 
         alignItems: 'center',
-    },
-    mainTitle: {
-        fontSize: 28,
-        fontWeight: '900',
-        fontStyle: 'italic',
-        textTransform: 'uppercase',
-        textAlign: 'center',
-        color: '#fff',
     },
     featuresMainContainer: {
         marginTop: 5,
@@ -101,7 +110,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginRight: 20,
         borderWidth: 1,
-        borderColor: '#333',
+        color: colors.textColor,
         backgroundColor: '#f7f7f7ff',
     },
     featureIcon: {
@@ -112,13 +121,38 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     featureTitle: {
-        fontSize: 17,
-        fontWeight: 'bold',
-        color: '#333',
+        fontSize: 16,
+        fontFamily: 'Poppins-SemiBold',
+        color: colors.textColor,
     },
     featureDescription: {
-        fontSize: 13,
-        color: '#666',
+        fontFamily: 'Poppins-Regular',
+        fontSize: 12.5,
+        color: colors.textColorGray,
         marginVertical: 5,
     },
+    featuresAboutImg: {
+        width: '100%',
+        height: 160,
+        overflow: 'hidden', 
+        justifyContent: 'center',
+    },
+    featuresAboutBannerContainer: {
+        marginTop: 30,
+    },
+    featuresBtn: {
+        backgroundColor: '#fff',
+        borderRadius: 30,
+        paddingHorizontal: 30,
+        paddingVertical: 10,
+        marginHorizontal: 'auto',
+        marginTop: 5,
+        marginBottom: 40,
+    },
+    featuresBtnText: {
+        color: colors.textColor,
+        fontFamily: 'Poppins-Medium',
+        fontSize: 15,
+        textAlign: 'center',
+    }
 });

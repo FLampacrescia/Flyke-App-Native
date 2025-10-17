@@ -2,8 +2,8 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { updateItemQuantity, removeItem } from '../../store/slices/cartSlice';
-import QuantityButton from '../Buttons/QuantityButton/QuantityButton';
 import { Ionicons } from '@expo/vector-icons';
+import QuantityButton from '../Buttons/QuantityButton/QuantityButton';
 
 export default function CartProductUnit({ product }) {
   const dispatch = useDispatch();
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
+    height: 100,
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
@@ -68,11 +69,10 @@ const styles = StyleSheet.create({
   summaryContainer: {
     alignItems: 'flex-end',
     justifyContent: 'space-between',
-    height: '100%',
   },
   productTotal: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 15,
+    fontWeight: 600,
     marginTop: 10,
   },
 });

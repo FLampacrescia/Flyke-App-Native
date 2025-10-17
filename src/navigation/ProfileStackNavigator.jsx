@@ -1,9 +1,9 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MyAccount from '../screens/MyAccount/MyAccount';
-import ProfileHeaderCustom from '../components/common/Headers/ProfileHeaderCustom/ProfileHeaderCustom';
 import MyProfile from '../screens/MyProfile/MyProfile';
 import Wishlist from '../screens/Wishlist/Wishlist';
+import CustomHeader from '../components/common/Headers/CustomHeader/CustomHeader';
 
 const Stack = createNativeStackNavigator();
 
@@ -12,9 +12,7 @@ const ProfileStackNavigator = () => {
         <Stack.Navigator
             initialRouteName="MyAccount"
             screenOptions={{
-                header: ({ navigation, route }) => (
-                    <ProfileHeaderCustom navigation={navigation} route={route} />
-                ),
+                header: (props) => <CustomHeader {...props} />,
             }}
         >
             <Stack.Screen name="MyAccount" component={MyAccount} />

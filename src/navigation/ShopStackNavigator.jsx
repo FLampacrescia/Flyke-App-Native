@@ -1,10 +1,11 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from '../screens/home/Home';
+import About from '../screens/about/About';
 import ProductDetail from '../screens/ProductDetail/ProductDetail';
 import HomeHeaderCustom from '../components/common/Headers/HomeHeaderCustom/HomeHeaderCustom';
-import SearchScreen from '../screens/Search/SearchScreen';
-import DetailHeaderCustom from '../components/common/Headers/DetailHeaderCustom/DetailHeaderCustom';
+import Search from '../screens/Search/Search';
+import CustomHeader from '../components/common/Headers/CustomHeader/CustomHeader';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,23 +29,21 @@ const ShopStackNavigator = () => {
             <Stack.Screen 
                 name="ProductDetail" 
                 component={ProductDetail} 
-                options={{
-                    header: ({ navigation, route }) => (
-                        <DetailHeaderCustom navigation={navigation} route={route} />
-                    ),
-                }}
+                options={{ header: () => <CustomHeader title="Detalles del Producto" /> }}
             />
 
             <Stack.Screen 
                 name="Search" 
-                component={SearchScreen} 
-                options={{
-                    title: 'Buscar Productos',
-                    headerStyle: {
-                        backgroundColor: '#fff',
-                    },
-                    headerTintColor: '#000',
-                }}
+                component={Search} 
+                options={{ header: () => <CustomHeader title="Buscar Producto" /> }}
+            />
+
+            <Stack.Screen 
+                name="About" 
+                component={About} 
+                options={{ 
+                    header: () => <CustomHeader title="Acerca de Nosotros" /> 
+                }} 
             />
         </Stack.Navigator>
     );

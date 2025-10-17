@@ -15,24 +15,22 @@ export default function Cart() {
 
   const handleCheckout = () => {
     if (cartItems.length === 0) {
-      Alert.alert(t('cart_empty_warning_title') || 'Carrito Vacío', t('cart_empty_warning_message') || 'No puedes proceder con el carrito vacío.');
+      Alert.alert(t('cart_empty_warning'));
       return;
     }
 
     if (email) {
-      // Como no tenemos pantalla de Checkout, mostramos un WIP
-      Alert.alert("Work in Progress", "La funcionalidad de Checkout aún no está implementada.");
+      Alert.alert("No disponible", "La funcionalidad de Checkout aún no está implementada.");
     } else {
-      // Si el usuario no está logueado, le ofrecemos ir a la pantalla de autenticación
-      Alert.alert(
-        t('login_required_title') || 'Inicio de Sesión Requerido',
-        t('login_required_message') || 'Necesitas iniciar sesión para continuar.',
-        [
-          { text: 'Cancelar', style: 'cancel' },
-          { text: 'Ir a Login', onPress: () => navigation.navigate('Auth') }
-        ]
-      );
-    }
+            Alert.alert(
+                t('login_required_title') || 'Inicio de Sesión Requerido',
+                t('login_required_message') || 'Necesitas iniciar sesión para continuar.',
+                [
+                    { text: 'Cancelar', style: 'cancel' },
+                    { text: 'Ir a Login', onPress: () => navigation.navigate('AuthStack') } 
+                ]
+            );
+        }
   };
 
   const handleClearCart = () => {
@@ -45,8 +43,7 @@ export default function Cart() {
         data={cartItems}
         renderItem={({ item }) => <CartProductUnit product={item} />}
         keyExtractor={(item) => item._id.toString()}
-        style={styles.list}
-        ListEmptyComponent={<View style={styles.emptyContainer}><Text style={styles.emptyText}>{t('cart_empty') || 'Tu carrito está vacío'}</Text></View>}
+        ListEmptyComponent={<View style={styles.emptyContainer}><Text style={styles.emptyText}>{t('cart_empty')}</Text></View>}
       />
       <View style={styles.footer}>
         <Text style={styles.totalTitle}>TOTAL</Text>
@@ -75,14 +72,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 50,
+    marginTop: 250,
   },
   emptyText: {
-    fontSize: 18,
+    fontFamily: 'Poppins-Regular',
+    fontSize: 17,
     color: '#888',
-  },
-  list: {
-    flex: 1,
   },
   footer: {
     flexDirection: 'row',
@@ -94,11 +89,11 @@ const styles = StyleSheet.create({
   },
   totalTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-SemiBold',
   },
   totalAmount: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-SemiBold',
   },
   buttonsContainer: {
     padding: 16,
@@ -111,12 +106,13 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     backgroundColor: '#121212',
+    borderWidth: 1,
     borderRadius: 30,
   },
   primaryButtonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-SemiBold',
   },
   secondaryButton: {
     backgroundColor: 'transparent',
@@ -126,6 +122,6 @@ const styles = StyleSheet.create({
   secondaryButtonText: {
     color: '#121212',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-SemiBold',
   },
 });

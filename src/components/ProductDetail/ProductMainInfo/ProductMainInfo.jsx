@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { addItem } from '../../../store/slices/cartSlice';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -27,7 +27,7 @@ export default function ProductMainInfo({ product }) {
 
     const handleAddToCart = () => {
         dispatch(addItem({ product, quantity }));
-        alert('Producto agregado al carrito');
+        Alert.alert("¡Éxito!", "Producto agregado al carrito");
     };
 
     return (
@@ -54,7 +54,7 @@ export default function ProductMainInfo({ product }) {
 
                 <View style={styles.shipmentContainer}>
                     <Icon name="truck" size={20} color="#27AE60" />
-                    <Text style={styles.shipmentText}>Este producto tiene <Text style={{fontWeight: 'bold'}}>envío gratis a todo el país</Text>.</Text>
+                    <Text style={styles.shipmentText}>Este producto tiene <Text style={{fontFamily: 'Poppins-SemiBold',}}>envío gratis a todo el país</Text>.</Text>
                 </View>
 
                 <TouchableOpacity style={styles.addToCartButton} onPress={handleAddToCart}>
@@ -83,12 +83,13 @@ const styles = StyleSheet.create({
         marginBottom: 15,
     },
     productTitle: {
-        fontSize: 24,
-        fontWeight: 'bold',
+        fontSize: 23,
+        fontFamily: 'Poppins-SemiBold',
         color: '#121212',
     },
     productCategory: {
-        fontSize: 16,
+        fontFamily: 'Poppins-Regular',
+        fontSize: 15,
         color: '#777',
         marginTop: 4,
     },
@@ -99,12 +100,13 @@ const styles = StyleSheet.create({
         borderBottomColor: '#eee',
     },
     productPrice: {
-        fontSize: 24,
-        fontWeight: 'bold',
+        fontSize: 23,
+        fontFamily: 'Poppins-SemiBold',
         color: '#121212',
     },
     feeText: {
-        fontSize: 14,
+        fontFamily: 'Poppins-Regular',
+        fontSize: 13,
         color: '#23a057ff',
         marginTop: 5,
     },
@@ -112,8 +114,8 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     sectionTitle: {
-        fontSize: 16,
-        fontWeight: '600',
+        fontSize: 15,
+        fontFamily: 'Poppins-SemiBold',
         marginBottom: 10,
     },
     quantityContainer: {
@@ -130,11 +132,11 @@ const styles = StyleSheet.create({
     },
     quantityButtonText: {
         fontSize: 20,
-        fontWeight: 'bold',
+        fontFamily: 'Poppins-SemiBold',
     },
     quantityText: {
         fontSize: 18,
-        fontWeight: '600',
+        fontFamily: 'Poppins-SemiBold',
         marginHorizontal: 20,
     },
     shipmentContainer: {
@@ -146,8 +148,9 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
     shipmentText: {
+        fontFamily: 'Poppins-Regular',
         marginLeft: 10,
-        fontSize: 13,
+        fontSize: 12.4,
         color: '#121212',
     },
     addToCartButton: {
@@ -158,8 +161,8 @@ const styles = StyleSheet.create({
     },
     addToCartButtonText: {
         color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
+        fontSize: 15,
+        fontFamily: 'Poppins-SemiBold',
     }
 });
 

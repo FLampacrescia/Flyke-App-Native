@@ -49,17 +49,19 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 18,
-        fontWeight: 'bold',
+        fontFamily: 'Poppins-SemiBold',
         marginBottom: 10,
         color: '#121212',
     },
     description: {
-        fontSize: 16,
+        fontFamily: 'Poppins-Regular',
+        fontSize: 15,
         lineHeight: 24,
         color: '#777',
     },
     detailItem: {
-        fontSize: 16,
+        fontFamily: 'Poppins-Regular',
+        fontSize: 15,
         lineHeight: 24,
         color: '#777',
         marginBottom: 5,
